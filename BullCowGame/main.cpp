@@ -5,8 +5,7 @@
 */
 #include <iostream>
 #include <string>
-#include <ctype.h>
-#include <stdio.h>
+#include <locale>
 #include "FBullCowGame.h"
 
 using FText = std::string;
@@ -34,17 +33,17 @@ int main()
 
 void PrintIntro()
 {
-	constexpr int32 WORD_LENGHT = 9;
+	
 	//introduce game
 	std::cout << "Welcome to Bulls and Cows\n";
-	std::cout << "Can you guess the " << WORD_LENGHT << " letter isogram I'm thinking of?\n";
+	std::cout << "Can you guess the " << BCGame.GetHiddenWordLenght() << " letter isogram I'm thinking of?\n";
 	return;
 }
 
-FText GetGuess()
+FText GetGuess()//todo get a valid guess
 {
 	int32 CurrentTry = BCGame.GetCurrentTry();
-	std::cout << "Attempt Number: " << CurrentTry << " "; 
+	std::cout << "Attempt Number " << CurrentTry << ": "; 
 
 	//get a guess from the user 
 	FText Guess = "";
@@ -61,15 +60,17 @@ void RepeatGuess(FText Guess)
 
 void PlayGame()
 {
-	
+	BCGame.Reset();
 	int32 MaxTries = BCGame.GetMaxTries();
-	//todo use while loop once we let the game validate
-	for ( int32 count = 1; count <= MaxTries; count++) {
-		RepeatGuess(GetGuess()); //todo validate input 
+	for ( int32 count = 1; count <= MaxTries; count++) {	//todo use while loop once we let the game validate
 
-		//submit only valid quess
-		//output number of bull and cows 
+		FText Guess = GetGuess(); //todo validate input
+		EGuessStatus Status = BCGame.CheckGuessValidity(Guess);
 
+		FBullCowCount BullCowCount = BCGame.SubmitGuess(Guess);	//submit only valid quess
+
+		std::cout << "Bulls = " << BullCowCount.Bulls;
+		std::cout << " Cows = " << BullCowCount.Cows << "\n"; 
 		std::cout << std::endl;
 	}
 }
