@@ -10,6 +10,8 @@ void RepeatGuess(std::string Guess);
 void PlayGame();
 bool AskToPlayAgain();
 
+FBullCowGame BCGame; //instantiated  a new game instance 
+
 int main()
 {
 	bool bWantsToPlayAgain = false; 
@@ -24,15 +26,18 @@ int main()
 
 void PrintIntro()
 {
-	constexpr int WORLD_LENGHT = 9;
+	constexpr int WORD_LENGHT = 9;
 	//introduce game
 	std::cout << "Welcome to Bulls and Cows\n";
-	std::cout << "Can you guess the " << WORLD_LENGHT << " letter isogram I'm thinking of?\n";
+	std::cout << "Can you guess the " << WORD_LENGHT << " letter isogram I'm thinking of?\n";
 	return;
 }
 
 std::string GetGuess()
 {
+	int CurrentTry = BCGame.GetCurrentTry();
+	std::cout << "Attempt Number: " << CurrentTry << " "; 
+
 	//get a guess from the user 
 	std::string Guess = "";
 	std::getline(std::cin, Guess);
@@ -48,12 +53,15 @@ void RepeatGuess(std::string Guess)
 
 void PlayGame()
 {
-	FBullCowGame BCGame; //instantiated the class! 
+	
+	int MaxTries = BCGame.GetMaxTries();
+	//todo use while loop once we let the game validate
+	for (int count = 1; count <= MaxTries; count++) {
+		RepeatGuess(GetGuess()); //todo validate input 
 
-	constexpr int MAXIMUM_GUESSES = 5;
+		//submit only valid quess
+		//output number of bull and cows 
 
-	for (int count = 1; count <= MAXIMUM_GUESSES; count++) {
-		RepeatGuess(GetGuess());
 		std::cout << std::endl;
 	}
 }
