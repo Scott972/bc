@@ -1,12 +1,20 @@
+/*
+	This is the console executable that makes use of the BullCow class. 
+	This acts as the view in the MVC pattern and is responsible for all 
+	user interaction.  For game logic see the FB
+*/
 #include <iostream>
 #include <string>
 #include <ctype.h>
 #include <stdio.h>
 #include "FBullCowGame.h"
 
+using FText = std::string;
+using int32 = int; 
+
 void PrintIntro();
-std::string GetGuess(); 
-void RepeatGuess(std::string Guess);
+FText GetGuess(); 
+void RepeatGuess(FText Guess);
 void PlayGame();
 bool AskToPlayAgain();
 
@@ -26,27 +34,27 @@ int main()
 
 void PrintIntro()
 {
-	constexpr int WORD_LENGHT = 9;
+	constexpr int32 WORD_LENGHT = 9;
 	//introduce game
 	std::cout << "Welcome to Bulls and Cows\n";
 	std::cout << "Can you guess the " << WORD_LENGHT << " letter isogram I'm thinking of?\n";
 	return;
 }
 
-std::string GetGuess()
+FText GetGuess()
 {
-	int CurrentTry = BCGame.GetCurrentTry();
+	int32 CurrentTry = BCGame.GetCurrentTry();
 	std::cout << "Attempt Number: " << CurrentTry << " "; 
 
 	//get a guess from the user 
-	std::string Guess = "";
+	FText Guess = "";
 	std::getline(std::cin, Guess);
 	 
 	return Guess; 
 }
 
 
-void RepeatGuess(std::string Guess)
+void RepeatGuess(FText Guess)
 {
 	std::cout << "You entered " << Guess << std::endl;
 }
@@ -54,9 +62,9 @@ void RepeatGuess(std::string Guess)
 void PlayGame()
 {
 	
-	int MaxTries = BCGame.GetMaxTries();
+	int32 MaxTries = BCGame.GetMaxTries();
 	//todo use while loop once we let the game validate
-	for (int count = 1; count <= MaxTries; count++) {
+	for ( int32 count = 1; count <= MaxTries; count++) {
 		RepeatGuess(GetGuess()); //todo validate input 
 
 		//submit only valid quess
@@ -70,7 +78,7 @@ bool AskToPlayAgain()
 {
 	std::cout << "Do you want to play again? (y/n)";
 
-	std::string Response = "";
+	FText Response = "";
 	std::getline(std::cin, Response);
 
 	return tolower(Response[0]) == 'y';
