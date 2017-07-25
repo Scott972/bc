@@ -1,4 +1,6 @@
 #include "FBullCowGame.h"
+#include <map>
+#define TMap std::map
 
 using int32 = int; 
 
@@ -10,7 +12,7 @@ FBullCowGame::FBullCowGame()
 void FBullCowGame::Reset()
 {
 	constexpr int32 MAX_TRIES = 8;
-	const FString HIDDEN_WORD = "planet";
+	const FString HIDDEN_WORD = "wesley";
 
 	MyMaxTries = MAX_TRIES;
 	MyHiddenWord = HIDDEN_WORD;
@@ -41,14 +43,12 @@ EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess)
 	FString ReversedGuess = Guess; 
 	std::reverse(ReversedGuess.begin(), ReversedGuess.end());
 
-	//convert the entered string to determine if input is all lowercase
-	FString LowerCaseGuess = Guess;
-	std::transform(LowerCaseGuess.begin(), LowerCaseGuess.end(), LowerCaseGuess.begin(), ::tolower);
+	
 
-	if (false) {
+	if (! IsIsogram(Guess)) {
 		return EGuessStatus::Not_Isogram;
 	}
-	else if (Guess != LowerCaseGuess) {
+	else if (! IsLowerCase(Guess)) {
 		return EGuessStatus::Not_Lower_Case;
 	}
 	else if (Guess.empty()) {
@@ -107,4 +107,37 @@ FBullCowCount FBullCowGame::SubmitValidGuess(FString Guess)
 int32 FBullCowGame::GetHiddenWordLenght() const
 {
 	return MyHiddenWord.length(); 
+}
+
+ bool  FBullCowGame::IsIsogram(FString Guess) const
+{
+	 if (Guess.length() <= 1 ) {
+		 return true; //let's count single chars as an isogram for now
+	 }
+
+	 TMap<char, bool> LetterExists;
+
+	 for (char Letter : Guess) { //for each char as letter for the guess
+		 Letter = tolower(Letter);
+		 if (LetterExists[Letter]) {
+			 return false;
+		 }
+		 else {
+			 LetterExists[Letter] = true;
+		 }
+	 }
+
+	 return true; 
+}
+
+ bool FBullCowGame::IsLowerCase(FString Guess) 
+{
+	 FString LowerCaseGuess = Guess;
+	 std::transform(LowerCaseGuess.begin(), LowerCaseGuess.end(), LowerCaseGuess.begin(), ::tolower);
+
+	 if (Guess == LowerCaseGuess) {
+		 return true;
+	 }
+
+	 return false; 
 }
