@@ -11,20 +11,43 @@ FBullCowGame::FBullCowGame()
 
 void FBullCowGame::Reset()
 {
-	constexpr int32 MAX_TRIES = 8;
-	const FString HIDDEN_WORD = "wesley";
-
-	MyMaxTries = MAX_TRIES;
-	MyHiddenWord = HIDDEN_WORD;
+	
 	MyCurrentTry = 1;
 	bIsGameWon = false;
 
 	return;
 }
 
+void FBullCowGame::SetHiddenWord(FString HiddenWord) 
+{
+	MyHiddenWord = HiddenWord;
+}
+
+void FBullCowGame::SetGameDifficulty(int32 SelectedDifficulty)
+{
+	TMap<int32, FString> PossibleWords{
+		{3, "box"},
+		{6, "planes"}
+	};
+
+	for (auto word : PossibleWords) {
+		if (word.first == SelectedDifficulty) {
+			SetHiddenWord(word.second); 
+		}
+	}
+}
+
 int32 FBullCowGame::GetMaxTries() const
 {
-	return MyMaxTries;
+	TMap<int32, int32> WordLenghtToMaxtries{
+		{3,5},
+		{4,6},
+		{5,7},
+		{6,8},
+		{10, 15}
+	};
+
+	return WordLenghtToMaxtries[MyHiddenWord.length()];
 }
 
 int32 FBullCowGame::GetCurrentTry() const

@@ -17,13 +17,14 @@ void RepeatGuess(FText Guess);
 void PlayGame();
 bool AskToPlayAgain();
 void PrintGameSummary(bool IsWon);
-
+void SetDifficulty(); 
 FBullCowGame BCGame; //instantiated  a new game instance 
 
 int main()
 {
 	bool bWantsToPlayAgain = false; 
 	do {
+		SetDifficulty(); 
 		PrintIntro();
 		PlayGame();
 		bWantsToPlayAgain = AskToPlayAgain();
@@ -37,7 +38,7 @@ void PrintIntro()
 	
 	//introduce game
 	std::cout << "\n\n Welcome to Bulls and Cows\n";
-	std::cout << "Can you guess the " << BCGame.GetHiddenWordLenght() << " letter isogram I'm thinking of?\n";
+	std::cout << "Can you guess the " << BCGame.GetHiddenWordLenght() << " letter isogram I'm thinking of?\n\n";
 	return;
 }
 
@@ -59,6 +60,18 @@ void PlayGame()
 
 }
 
+void SetDifficulty()
+{
+	int Difficulty;
+
+	std::cout << "Would you like to play with a 3 letter word or a 6 letter word? Choices are\n";
+	std::cout << "3 or 6\n";
+
+	std::cin >> Difficulty; 
+
+	BCGame.SetGameDifficulty(Difficulty);
+}
+
 FText GetValidGuess()
 {
 	EGuessStatus Status = EGuessStatus::Invalid_Status;
@@ -66,7 +79,7 @@ FText GetValidGuess()
 
 	do {
 		int32 CurrentTry = BCGame.GetCurrentTry();
-		std::cout << "Attempt Number " << CurrentTry << ": ";
+		std::cout << "Attempt Number " << CurrentTry << " of " << BCGame.GetMaxTries() << ": ";
 
 		//get a guess from the user 
 		std::getline(std::cin, Guess);
@@ -131,3 +144,4 @@ void PrintGameSummary(bool IsWon)
 		std::cout << " Better Luck next time!\n";
 	}
 }
+
