@@ -11,7 +11,6 @@ FBullCowGame::FBullCowGame()
 
 void FBullCowGame::Reset()
 {
-	
 	MyCurrentTry = 1;
 	bIsGameWon = false;
 
@@ -35,6 +34,10 @@ void FBullCowGame::SetGameDifficulty(int32 SelectedDifficulty)
 			SetHiddenWord(word.second); 
 		}
 	}
+
+	std::cout << "You did not enter a valid lenght, using test mode.\n"; 
+	/*Sets hidden word to default, should handle invalid input here at some point */
+	MyHiddenWord = "telios";
 }
 
 int32 FBullCowGame::GetMaxTries() const

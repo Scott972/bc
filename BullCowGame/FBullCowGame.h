@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <algorithm>
-	
+#include <iostream>	
 using FString = std::string;
 using int32 = int;
 
